@@ -10,6 +10,9 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+add_library(cpufeatures STATIC
+        ${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c)
+
 add_library( # Sets the name of the library.
         native-lib
 
@@ -17,7 +20,10 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        src/main/cpp/native-lib.cpp)
+        src/main/cpp/native-lib.cpp
+        )
+set_property(SOURCE src/main/cpp/native-lib.cpp
+        APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
